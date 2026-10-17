@@ -1,0 +1,93 @@
+{
+  "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+  "meta": {
+    "version": "PTDL_v2",
+    "update_url": null
+  },
+  "exported_at": "2026-10-16T00:00:00+00:00",
+  "name": "NOVA WhatsApp Group Ops",
+  "author": "admin@example.com",
+  "description": "Sci-fi styled Telegram control panel for WhatsApp group operations with pairing-code login and confirmation safeguards.",
+  "features": null,
+  "docker_images": {
+    "Node.js 20": "ghcr.io/parkervcp/yolks:nodejs_20",
+    "Node.js 22": "ghcr.io/parkervcp/yolks:nodejs_22"
+  },
+  "file_denylist": [],
+  "startup": "if [[ -d .git ]] && [[ {{AUTO_UPDATE}} == \"1\" ]]; then git pull; fi; if [ -f /home/container/package.json ]; then /usr/local/bin/npm install --omit=dev; fi; /usr/local/bin/node /home/container/{{JS_FILE}}",
+  "config": {
+    "files": "{}",
+    "startup": "{\"done\": \"NOVA control node online\"}",
+    "logs": "{}",
+    "stop": "^C"
+  },
+  "scripts": {
+    "installation": {
+      "script": "#!/bin/bash\napt update\napt install -y git curl unzip\nmkdir -p /mnt/server\ncd /mnt/server\nif [ -f package.json ]; then npm install --omit=dev; fi\necho \"Install done. Upload the bot files (or the zip and unarchive it), then start the server.\"",
+      "container": "node:20-bookworm-slim",
+      "entrypoint": "bash"
+    }
+  },
+  "variables": [
+    {
+      "name": "Telegram Bot Token",
+      "description": "Token from @BotFather.",
+      "env_variable": "TELEGRAM_BOT_TOKEN",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|max:200",
+      "field_type": "text"
+    },
+    {
+      "name": "Telegram Owner ID",
+      "description": "Your numeric Telegram ID (from @userinfobot). Required: only this user can control the bot.",
+      "env_variable": "TELEGRAM_OWNER_ID",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|max:20",
+      "field_type": "text"
+    },
+    {
+      "name": "Main File",
+      "description": "File to run.",
+      "env_variable": "JS_FILE",
+      "default_value": "index.js",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|max:50",
+      "field_type": "text"
+    },
+    {
+      "name": "Auto Update",
+      "description": "Run git pull on start if the folder is a git repo (1 = yes, 0 = no).",
+      "env_variable": "AUTO_UPDATE",
+      "default_value": "0",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|boolean",
+      "field_type": "text"
+    },
+    {
+      "name": "Kick Admins",
+      "description": "Also remove admins (true/false). Group creator is never removed.",
+      "env_variable": "KICK_ADMINS",
+      "default_value": "true",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|in:true,false",
+      "field_type": "text"
+    },
+    {
+      "name": "Require Confirm",
+      "description": "Ask Yes/Cancel before kicking (true/false).",
+      "env_variable": "REQUIRE_CONFIRM",
+      "default_value": "true",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|in:true,false",
+      "field_type": "text"
+    }
+  ]
+}
